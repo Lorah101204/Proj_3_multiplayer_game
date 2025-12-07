@@ -43,7 +43,7 @@ public class InputReader : NetworkBehaviour
         JumpPressed = false;
     }
 
-    private void OnDestroy()
+    private new void OnDestroy()
     {
         input.Disable();
     }
