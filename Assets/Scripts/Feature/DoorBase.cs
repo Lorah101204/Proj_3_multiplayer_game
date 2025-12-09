@@ -9,12 +9,12 @@ public abstract class DoorBase : MonoBehaviour, IDoor
 
     private void OnEnable()
     {
-        EventDispatcher.Instance.RegisterListener(EventID.OnSwitchChanged, param => OnSwitchChanged(param));
+        EventDispatcher.Instance.RegisterListener(EventID.OnSwitchChanged, OnSwitchChanged);
     }
 
     private void OnDisable()
     {
-        EventDispatcher.Instance.RemoveListener(EventID.OnSwitchChanged, param => OnSwitchChanged(param));
+        EventDispatcher.Instance.RemoveListener(EventID.OnSwitchChanged, OnSwitchChanged);
     }
 
     private void OnSwitchChanged(object param)

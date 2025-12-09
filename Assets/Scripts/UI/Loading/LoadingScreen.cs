@@ -10,53 +10,47 @@ public class LoadingScreen : MonoBehaviour
     [SerializeField] Slider loadingSlider;
 
     [SerializeField] private float delayBeforeHiding = 0.5f;
+    [SerializeField] private float defaultLoadingStep = 0.2f;
 
-    [SerializeField]
-    private float defaultLoadingStep = 0.2f;
-
-    private bool isFirstLoading = true;
-    private void Start()
+    private void OnEnable()
     {
-        EventDispatcher.Instance.RegisterListener(EventID.OnLoadingChangeProgress, (param) => OnLoadingChangeProgress((Tuple<float, float>)param));
+        EventDispatcher.Instance.RegisterListener(EventID.OnLoadingChangeProgress,OnProgressEvent);
+    }
+
+    private void OnDisable()
+    {
+        EventDispatcher.Instance.RemoveListener(EventID.OnLoadingChangeProgress,OnProgressEvent);
+    }
+
+    private void OnProgressEvent(object param)
+    {
+        if (param is not Tuple<float, float> t) return;
+        OnLoadingChangeProgress(t);
     }
 
     private void OnLoadingChangeProgress(Tuple<float, float> param)
     {
-        var percentage = param.Item1;
-        var timeLoad = param.Item2 < defaultLoadingStep ? defaultLoadingStep : param.Item2;
-        if (percentage == 100)
-        {
-            if (!this.gameObject.activeSelf)
-            {
-                Show();
-            }
-            loadingSlider.DOKill();
-            loadingSlider.DOValue(percentage, timeLoad);
-            Invoke(nameof(Hide), delayBeforeHiding);
-        }
-        else
-        {
-            if (!this.gameObject.activeSelf)
-            {
-                Show();
-            }
+        float percentage = param.Item1;
+        float timeLoad = Mathf.Max(param.Item2, defaultLoadingStep);
 
-            loadingSlider.DOKill();
-            loadingSlider.DOValue(percentage, timeLoad);
+        if (!gameObject.activeSelf) Show();
+
+        loadingSlider.DOKill();
+        loadingSlider.DOValue(percentage, timeLoad);
+
+        if (percentage >= 100f)
+        {
+            Invoke(nameof(Hide), delayBeforeHiding);
         }
     }
 
-
     private void Hide()
     {
-        canvas
-            .DOFade(0, 0.25f)
-            .OnComplete(() =>
-            {
-                gameObject.SetActive(false);
-                EventDispatcher.Instance.PostEvent(EventID.LoadingCompletedEvent, this);
-            });
-        isFirstLoading = false;
+        canvas.DOFade(0, 0.25f).OnComplete(() =>
+        {
+            gameObject.SetActive(false);
+            EventDispatcher.Instance.PostEvent(EventID.LoadingCompletedEvent, this);
+        });
     }
 
     private void Show()
@@ -66,5 +60,3 @@ public class LoadingScreen : MonoBehaviour
         loadingSlider.value = 0;
     }
 }
-
-
