@@ -16,11 +16,10 @@ public class GameInit : MonoBehaviour
     {
         StartCoroutine(LoadGameScene());
     }
-    
+
     private IEnumerator LoadGameScene()
     {
         yield return new WaitForSeconds(0.2f);
-        SceneManager.LoadScene(SceneName.GAMEPLAY);
-
+        SceneManager.LoadScene(SceneName.MENU);
     }
 }

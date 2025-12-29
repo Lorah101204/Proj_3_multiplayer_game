@@ -30,6 +30,7 @@ public class SceneManager : Singleton<SceneManager>
 
             yield return null;
         }
+        EventDispatcher.Instance.PostEvent(EventID.LoadingCompletedEvent, sceneName);
     }
 
     public static void LoadScene(string sceneName)

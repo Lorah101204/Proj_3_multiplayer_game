@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class SlideDoor : DoorBase
 {
@@ -17,12 +18,12 @@ public class SlideDoor : DoorBase
     public override void Open()
     {
         base.Open();
-        door.position = openPos;
+        door.DOMove(openPos, 0.5f).SetEase(Ease.OutExpo);
     }
 
     public override void Close()
     {
         base.Close();
-        door.position = closedPos;
+        door.DOMove(closedPos, 0.5f).SetEase(Ease.OutExpo);
     }
 }

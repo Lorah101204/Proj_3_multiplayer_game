@@ -14,12 +14,12 @@ public class LoadingScreen : MonoBehaviour
 
     private void OnEnable()
     {
-        EventDispatcher.Instance.RegisterListener(EventID.OnLoadingChangeProgress,OnProgressEvent);
+        EventDispatcher.Instance.RegisterListener(EventID.OnLoadingChangeProgress, OnProgressEvent);
     }
 
     private void OnDisable()
     {
-        EventDispatcher.Instance.RemoveListener(EventID.OnLoadingChangeProgress,OnProgressEvent);
+        EventDispatcher.Instance.RemoveListener(EventID.OnLoadingChangeProgress, OnProgressEvent);
     }
 
     private void OnProgressEvent(object param)

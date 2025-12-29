@@ -21,12 +21,6 @@ public class LevelDataSO : ScriptableObject
         return leveldata.level;
     }
 
-    public string GetLevelByIndexD(int i)
-    {
-        var levelData = levels[i];
-        return levelData.levelName;
-    }
-
     public int GetTotalLevels() => levels.Count;
 }
 
@@ -35,6 +29,5 @@ public class LevelData
 {
     public int levelID;
     public int level;
-    public string levelName;
     public GameObject levelPrefab;
 }

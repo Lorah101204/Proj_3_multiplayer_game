@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Unity.Services.Matchmaker.Models;
 using UnityEngine;
 
 public interface IPushable
@@ -27,4 +29,10 @@ public interface IDoor
 public interface IInteractable
 {
     void Interact();
+}
+
+public interface IYieldSaveLoad
+{
+    public abstract void Save();
+    public abstract IEnumerator LoadData();
 }
