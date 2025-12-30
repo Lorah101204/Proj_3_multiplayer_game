@@ -49,7 +49,7 @@ public class LoadingScreen : MonoBehaviour
         canvas.DOFade(0, 0.25f).OnComplete(() =>
         {
             gameObject.SetActive(false);
-            EventDispatcher.Instance.PostEvent(EventID.LoadingCompletedEvent, this);
+            EventDispatcher.Instance.PostEvent(EventID.LoadingCompletedEvent, null);
         });
     }
 

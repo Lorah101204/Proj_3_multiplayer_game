@@ -1,16 +1,17 @@
+using TMPro;
+using Unity.Netcode;
 using UnityEngine;
+using Unity.Services.Relay;
 
 public class LobbyScene : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private TextMeshProUGUI joinCodeText;
+    private void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (NetworkManager.Singleton.IsHost)
+        {
+            joinCodeText.text = LobbyRelayManager.Instance.LobbyCode;
+            Debug.Log("Host in lobby — waiting for players...");
+        }
     }
 }

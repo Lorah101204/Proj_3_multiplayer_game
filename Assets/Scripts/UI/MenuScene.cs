@@ -5,6 +5,7 @@ using Unity.Netcode;
 public class MenuScene : MonoBehaviour
 {
     [SerializeField] private GameObject settingPopupPrefab;
+    [SerializeField] private GameObject HostJoinGO;
     [SerializeField] private Button playButton;
     [SerializeField] private Button settingButton;
 
@@ -22,7 +23,7 @@ public class MenuScene : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
-        SceneManager.LoadScene(SceneName.LOBBY);
+        HostJoinGO.SetActive(true);
     }
 
     private void OnSettingButtonClicked()

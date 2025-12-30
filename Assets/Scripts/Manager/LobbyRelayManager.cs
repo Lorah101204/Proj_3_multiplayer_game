@@ -1,159 +1,124 @@
-using System;
-using System.Threading.Tasks;
-using Unity.Services.Core;
-using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
+using Unity.Services.Relay.Models;
+using Unity.Services.Core;
+using Unity.Services.Authentication;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
 
 public class LobbyRelayManager : MonoBehaviour
 {
-    public static LobbyRelayManager Instance { get; private set; }
+    public static LobbyRelayManager Instance;
 
-    public Lobby CurrentLobby { get; private set; }
-    public string RelayJoinCode { get; private set; }
+    public Lobby CurrentLobby;
+    public string RelayJoinCode;
     public string LobbyCode => CurrentLobby?.LobbyCode;
 
-    [Header("Config")] public int MaxPlayers = 4;
-    public float HeartbeatInterval = 15f;
+    public Action OnHostReady;
+    public Action OnClientReady;
 
-    private float _heartbeatTimer;
-
-    private void Awake()
+    private async void Awake()
     {
         if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
 
-    private async void Start()
-    {
         await UnityServices.InitializeAsync();
-
-        if (!AuthenticationService.Instance.IsSignedIn)
-        {
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        }
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        Debug.Log("UGS Ready");
     }
 
-    private void Update()
-    {
-        HandleLobbyHeartbeat();
-    }
-
-    private void HandleLobbyHeartbeat()
-    {
-        if (CurrentLobby == null) return;
-        if (CurrentLobby.HostId != AuthenticationService.Instance.PlayerId) return;
-
-        _heartbeatTimer -= Time.deltaTime;
-        if (_heartbeatTimer <= 0f)
-        {
-            _heartbeatTimer = HeartbeatInterval;
-            _ = SendHeartbeat();
-        }
-    }
-
-    private async Task SendHeartbeat()
+    public async Task CreateLobbyAndRelay(int maxPlayers = 4)
     {
         try
         {
-            await LobbyService.Instance.SendHeartbeatPingAsync(CurrentLobby.Id);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Lobby heartbeat failed: {e.Message}");
-        }
-    }
+            // --- Create Relay allocation ---
+            var alloc = await RelayService.Instance.CreateAllocationAsync(maxPlayers - 1);
+            RelayJoinCode = await RelayService.Instance.GetJoinCodeAsync(alloc.AllocationId);
 
-    public async Task CreateLobby(string lobbyName)
-    {
-        try
-        {
-            var lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MaxPlayers, new CreateLobbyOptions
-            {
-                IsPrivate = false
-            });
+            Debug.Log($"[Relay] Join Code = {RelayJoinCode}");
 
-            CurrentLobby = lobby;
-            Debug.Log($"Lobby created — Code: {lobby.LobbyCode}");
-
-            await CreateRelayAllocation();
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"CreateLobby error: {e.Message}");
-        }
-    }
-
-    public async Task JoinLobby(string lobbyCode)
-    {
-        try
-        {
-            var lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
-            CurrentLobby = lobby;
-            Debug.Log("Joined lobby!");
-
-            if (lobby.Data.ContainsKey("joinCode"))
-            {
-                RelayJoinCode = lobby.Data["joinCode"].Value;
-                Debug.Log($"Joining relay with code: {RelayJoinCode}");
-                // Game start handled outside
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"JoinLobby error: {e.Message}");
-        }
-    }
-
-    private async Task CreateRelayAllocation()
-    {
-        try
-        {
-            var allocation = await RelayService.Instance.CreateAllocationAsync(MaxPlayers - 1);
-            RelayJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-
-            Debug.Log($"Relay created. Join Code: {RelayJoinCode}");
-
-            await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
-            {
-                Data = new System.Collections.Generic.Dictionary<string, DataObject>
+            CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(
+                "My Coop Room",
+                maxPlayers,
+                new CreateLobbyOptions
                 {
+                    Data = new Dictionary<string, DataObject>
                     {
-                        "joinCode", new DataObject(DataObject.VisibilityOptions.Public, RelayJoinCode)
+                        { "joinCode", new DataObject(DataObject.VisibilityOptions.Public, RelayJoinCode) }
                     }
-                }
-            });
+                });
+
+            Debug.Log($"[Lobby] Created: {CurrentLobby.Id}");
+            Debug.Log($"[Lobby] Lobby Code (SHARE THIS): {CurrentLobby.LobbyCode}");
+            var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            transport.SetRelayServerData(
+                alloc.RelayServer.IpV4,
+                (ushort)alloc.RelayServer.Port,
+                alloc.AllocationIdBytes,
+                alloc.Key,
+                alloc.ConnectionData
+            );
+
+            NetworkManager.Singleton.StartHost();
+            Debug.Log("[Netcode] HOST started");
+            OnHostReady?.Invoke();
         }
         catch (Exception e)
         {
-            Debug.LogError($"Relay create error: {e.Message}");
+            Debug.LogError($"CreateLobbyAndRelay FAILED: {e}");
+            throw;
         }
     }
 
-    public async Task DeleteLobby()
+    // ================= CLIENT ==================
+    public async Task JoinLobbyAndRelay(string lobbyCode)
     {
-        if (CurrentLobby == null) return;
-        if (CurrentLobby.HostId != AuthenticationService.Instance.PlayerId) return;
-
         try
         {
-            await LobbyService.Instance.DeleteLobbyAsync(CurrentLobby.Id);
-            Debug.Log("Lobby deleted.");
+            CurrentLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+
+            Debug.Log($"[Lobby] Joined lobby: {CurrentLobby.Id}");
+            Debug.Log($"[Lobby] Host Relay Code = {CurrentLobby.Data["joinCode"].Value}");
+
+            string relayCode = CurrentLobby.Data["joinCode"].Value;
+
+            var alloc = await RelayService.Instance.JoinAllocationAsync(relayCode);
+
+            var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            transport.SetRelayServerData(
+                alloc.RelayServer.IpV4,
+                (ushort)alloc.RelayServer.Port,
+                alloc.AllocationIdBytes,
+                alloc.Key,
+                alloc.ConnectionData,
+                alloc.HostConnectionData
+            );
+
+            NetworkManager.Singleton.StartClient();
+            Debug.Log("[Netcode] CLIENT started");
+
+            OnClientReady?.Invoke();
+        }
+        catch (LobbyServiceException le)
+        {
+            Debug.LogError($"JoinLobby failed: {le.Reason} - {le.Message}");
+            throw;
         }
         catch (Exception e)
         {
-            Debug.LogError($"DeleteLobby error: {e.Message}");
-        }
-        finally
-        {
-            CurrentLobby = null;
+            Debug.LogError($"JoinLobbyAndRelay FAILED: {e}");
+            throw;
         }
     }
 }

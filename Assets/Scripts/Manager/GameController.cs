@@ -11,7 +11,6 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -22,19 +21,10 @@ public class GameController : MonoBehaviour
     private void OnLoadingCompleted(object param)
     {
         string loadedScene = param as string;
-
-        if (loadedScene == SceneName.LOBBY)
+        if (loadedScene == SceneName.GAMEPLAY)
         {
-            Debug.Log("Lobby loaded → StartHost()");
-            StartCoroutine(StartHost());
         }
-
         IsPaused = false;
     }
 
-    private IEnumerator StartHost()
-    {
-        yield return new WaitForSeconds(1f);
-        NetworkManager.Singleton.StartHost();
-    }
 }
