@@ -131,6 +131,14 @@ PrefabInstance:
       propertyPath: HostJoinGO
       value: 
       objectReference: {fileID: 1134792031}
+    - target: {fileID: 239603220015626997, guid: 88d9ff989a5bb054ba95f740b7d4629f, type: 3}
+      propertyPath: settingPopupPrefab
+      value: 
+      objectReference: {fileID: 5471074664104647446, guid: 745f43b26d746e747b1cc74a473f0fe6, type: 3}
+    - target: {fileID: 1017005133902822882, guid: 88d9ff989a5bb054ba95f740b7d4629f, type: 3}
+      propertyPath: m_Name
+      value: SettingButton
+      objectReference: {fileID: 0}
     - target: {fileID: 2004300873168664130, guid: 88d9ff989a5bb054ba95f740b7d4629f, type: 3}
       propertyPath: m_Pivot.x
       value: 0

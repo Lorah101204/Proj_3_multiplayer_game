@@ -87,7 +87,7 @@ public class EventDispatcher : Singleton<EventDispatcher>
         }
         else
         {
-            //				Common.Log("PostEvent {0}, but no listener remain, Remove this key", eventID);
+            //Common.Log("PostEvent {0}, but no listener remain, Remove this key", eventID);
             _listeners.Remove(eventID);
         }
     }

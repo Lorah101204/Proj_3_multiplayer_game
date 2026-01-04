@@ -11,8 +11,7 @@ public class GameplayBootstrap : NetworkBehaviour
 
     private void SpawnLevel()
     {
-        LevelData levelData =
-            LevelManager.Instance.levelData.GetLevelData(LevelsPopup.SelectedLevelIndex);
+        LevelData levelData = LevelManager.Instance.levelData.GetLevelData(LevelsPopup.SelectedLevelIndex);
         GameObject level = Instantiate(levelData.levelPrefab);
         level.GetComponent<NetworkObject>().Spawn();
     }

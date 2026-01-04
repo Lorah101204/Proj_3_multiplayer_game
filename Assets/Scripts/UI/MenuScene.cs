@@ -4,7 +4,7 @@ using Unity.Netcode;
 
 public class MenuScene : MonoBehaviour
 {
-    [SerializeField] private GameObject settingPopupPrefab;
+    [SerializeField] private SettingPopup settingPopupPrefab;
     [SerializeField] private GameObject HostJoinGO;
     [SerializeField] private Button playButton;
     [SerializeField] private Button settingButton;
@@ -27,6 +27,7 @@ public class MenuScene : MonoBehaviour
     }
 
     private void OnSettingButtonClicked()
-    { 
+    {
+        settingPopupPrefab.Show();
     }
 }
