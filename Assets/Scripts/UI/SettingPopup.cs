@@ -1,50 +1,52 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections.Generic;
+using DesignPattern;
+using TMPro;
 
 public class SettingPopup : MonoBehaviour
 {
     [Header("Popup")]
     [SerializeField] private GameObject popup;
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private Button closeButton;
 
     [Header("UI Elements")]
-    [SerializeField] private Dropdown resolutionDropdown;
+    [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private Slider masterSlider;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
+    [SerializeField] private Button closeButton;
+
+    [Header("Display Mode")]
+    [SerializeField] private Button windowButton;
+    [SerializeField] private Button fullscreenButton;
 
     private Resolution[] resolutions;
 
     private void Start()
     {
-        InitResolutionOptions();
+        InitResolutionDropdownFromManager();
         LoadAudioToUI();
-    }
 
-    private void OnEnable()
-    {
         closeButton.onClick.AddListener(Hide);
-    }
-    private void OnDisable()
-    {
-        closeButton.onClick.RemoveListener(Hide);
+        windowButton.onClick.AddListener(SetWindowMode);
+        fullscreenButton.onClick.AddListener(SetFullscreenMode);
     }
 
-    // ------------------ RESOLUTION ------------------
-
-    private void InitResolutionOptions()
+    private void InitResolutionDropdownFromManager()
     {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
 
-        var options = new System.Collections.Generic.List<string>();
+        var options = new List<string>();
         int currentIndex = 0;
 
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = $"{resolutions[i].width} x {resolutions[i].height} {resolutions[i].refreshRateRatio.value}Hz";
+            string option =
+                $"{resolutions[i].width} x {resolutions[i].height} {resolutions[i].refreshRateRatio.value}Hz";
+
             options.Add(option);
 
             if (resolutions[i].width == Screen.currentResolution.width &&
@@ -58,16 +60,43 @@ public class SettingPopup : MonoBehaviour
         resolutionDropdown.value = currentIndex;
         resolutionDropdown.RefreshShownValue();
 
-        resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
+        resolutionDropdown.onValueChanged.AddListener(OnResolutionSizeChanged);
     }
 
-    private void OnResolutionChanged(int index)
+    private void OnResolutionSizeChanged(int index)
     {
         var res = resolutions[index];
-        Screen.SetResolution(res.width, res.height, Screen.fullScreenMode, res.refreshRateRatio);
+
+        this.PostEvent(
+            EventID.ResolutionChanged,
+            new ResolutionData(res.width, res.height, Screen.fullScreen)
+        );
     }
 
-    // ------------------ AUDIO ------------------
+
+    private void SetWindowMode()
+    {
+        AudioManager.PlaySfx(SoundID.ButtonClick);
+        var res = Screen.currentResolution;
+
+        this.PostEvent(
+            EventID.ResolutionChanged,
+            new ResolutionData(res.width, res.height, false)
+        );
+    }
+
+    private void SetFullscreenMode()
+    {
+        AudioManager.PlaySfx(SoundID.ButtonClick);
+        var res = Screen.currentResolution;
+
+        this.PostEvent(
+            EventID.ResolutionChanged,
+            new ResolutionData(res.width, res.height, true)
+        );
+    }
+
+    // --- AUDIO PART ---
 
     private void LoadAudioToUI()
     {
@@ -80,7 +109,7 @@ public class SettingPopup : MonoBehaviour
         sfxSlider.onValueChanged.AddListener(v    => AudioManager.Instance.SfxVolume    = v);
     }
 
-    // ------------------ POPUP ANIMATION ------------------
+
 
     public void Show()
     {
@@ -88,13 +117,14 @@ public class SettingPopup : MonoBehaviour
         canvasGroup.alpha = 0;
         canvasGroup.blocksRaycasts = true;
 
-        canvasGroup.DOFade(1f, 0.25f).SetEase(Ease.OutQuad);
+        canvasGroup.DOFade(1f, 0.25f);
         popup.transform.localScale = Vector3.one * 0.8f;
         popup.transform.DOScale(1f, 0.25f).SetEase(Ease.OutBack);
     }
 
     public void Hide()
     {
+        AudioManager.PlaySfx(SoundID.ButtonClick);
         canvasGroup.blocksRaycasts = false;
 
         canvasGroup.DOFade(0f, 0.2f).OnComplete(() =>
@@ -102,6 +132,6 @@ public class SettingPopup : MonoBehaviour
             popup.SetActive(false);
         });
 
-        popup.transform.DOScale(0.8f, 0.2f).SetEase(Ease.InQuad);
+        popup.transform.DOScale(0.8f, 0.2f);
     }
 }

@@ -544,6 +544,7 @@ GameObject:
   - component: {fileID: 554566962}
   - component: {fileID: 554566965}
   - component: {fileID: 554566966}
+  - component: {fileID: 554566968}
   - component: {fileID: 554566967}
   m_Layer: 0
   m_Name: GameManager
@@ -585,7 +586,7 @@ Transform:
   m_GameObject: {fileID: 554566961}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 232.74847, y: 128.67542, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -633,7 +634,23 @@ MonoBehaviour:
   musicSource: {fileID: 1766381792}
   sfxSource: {fileID: 1418036728}
   minSfxInterval: 0.08
-  sounds: []
+  sounds:
+  - id: 1
+    clip: {fileID: 0}
+  - id: 2
+    clip: {fileID: 0}
+--- !u!114 &554566968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554566961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97135956a98c13d4fa4a3f9feee878d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResolutionManager
 --- !u!1 &697163890
 GameObject:
   m_ObjectHideFlags: 0
@@ -1238,7 +1255,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &1685705733
 RectTransform:
@@ -1486,6 +1503,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 218958292}
   - {fileID: 1685705733}
-  - {fileID: 1800482139}
   - {fileID: 554566964}
   - {fileID: 453146488}
+  - {fileID: 1800482139}

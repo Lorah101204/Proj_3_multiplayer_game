@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+
 public class GameInit : MonoBehaviour
 {
     public static GameInit Instance;
@@ -9,6 +11,7 @@ public class GameInit : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = 60;
+        ResolutionManager.Instance.ApplySavedResolution();
     }
 
     public virtual void Start()
@@ -20,5 +23,7 @@ public class GameInit : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         SceneManager.LoadScene(SceneName.MENU);
+        yield return new WaitForSeconds(0.2f);
+        AudioManager.PlayMusic(SoundID.BGMMusic, true);
     }
 }

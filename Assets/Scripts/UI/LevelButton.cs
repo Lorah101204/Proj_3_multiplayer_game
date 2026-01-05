@@ -35,6 +35,7 @@ public class LevelButton : MonoBehaviour
 
     private void OnLevelButtonClicked()
     {
+        AudioManager.PlaySfx(SoundID.ButtonClick);
         onClick?.Invoke(levelIndexValue);
     }
 }

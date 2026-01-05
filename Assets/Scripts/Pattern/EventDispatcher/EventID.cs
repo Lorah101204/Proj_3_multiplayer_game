@@ -6,6 +6,7 @@ namespace DesignPattern
         OnLoadingChangeProgress = 1,
         LoadingCompletedEvent = 2,
         OnSwitchChanged = 3,
-        OnDoorChanged = 4
+        OnDoorChanged = 4,
+        ResolutionChanged = 5
     }
 }

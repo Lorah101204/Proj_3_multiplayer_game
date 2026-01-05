@@ -4,7 +4,7 @@ using Unity.Netcode;
 
 public class MenuScene : MonoBehaviour
 {
-    [SerializeField] private SettingPopup settingPopupPrefab;
+    [SerializeField] private SettingPopup settingPopup;
     [SerializeField] private GameObject HostJoinGO;
     [SerializeField] private Button playButton;
     [SerializeField] private Button settingButton;
@@ -23,11 +23,14 @@ public class MenuScene : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
+        AudioManager.PlaySfx(SoundID.ButtonClick);
         HostJoinGO.SetActive(true);
     }
 
     private void OnSettingButtonClicked()
     {
-        settingPopupPrefab.Show();
+        AudioManager.PlaySfx(SoundID.ButtonClick);
+        settingPopup.gameObject.SetActive(true);
+        settingPopup.Show();
     }
 }

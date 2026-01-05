@@ -35,16 +35,19 @@ public class HostJoinPopup : MonoBehaviour
 
     async void OnClickHost()
     {
+        AudioManager.PlaySfx(SoundID.ButtonClick);
         await LobbyRelayManager.Instance.CreateLobbyAndRelay();
     }
 
     void OnClickShowJoinPanel()
-    {
+    {  
+        AudioManager.PlaySfx(SoundID.ButtonClick);
         joinPanel.SetActive(true);
     }
 
     async void OnClickConfirmJoin()
     {
+        AudioManager.PlaySfx(SoundID.ButtonClick);
         string code = joinCodeInput.text.Trim();
         if (string.IsNullOrEmpty(code)) return;
 

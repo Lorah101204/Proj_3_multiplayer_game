@@ -100,6 +100,7 @@ public class AudioManager : MonoBehaviour
         src.clip = clip;
         src.loop = loop;
         src.Play();
+        Debug.Log("Play Music: " + id);
     }
 
     public static void StopMusic()
@@ -116,7 +117,7 @@ public class AudioManager : MonoBehaviour
 
         if (Time.time - Instance.lastSfxTime < Instance.minSfxInterval)
             return;
-
+        Debug.Log("Play SFX: " + id);
         Instance.sfxSource.PlayOneShot(clip, volume);
         Instance.lastSfxTime = Time.time;
     }
