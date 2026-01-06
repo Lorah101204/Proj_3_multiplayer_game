@@ -636,9 +636,11 @@ MonoBehaviour:
   minSfxInterval: 0.08
   sounds:
   - id: 1
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 719abf1f8715d54409e61af07f5ae34a, type: 3}
   - id: 2
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: e2c1e5055fb57a9428d73886aa686246, type: 3}
+  - id: 3
+    clip: {fileID: 8300000, guid: 7455bda2bdc965b4b8337a4eba515280, type: 3}
 --- !u!114 &554566968
 MonoBehaviour:
   m_ObjectHideFlags: 0

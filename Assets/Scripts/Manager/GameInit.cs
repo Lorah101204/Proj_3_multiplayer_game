@@ -11,7 +11,6 @@ public class GameInit : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = 60;
-        ResolutionManager.Instance.ApplySavedResolution();
     }
 
     public virtual void Start()
@@ -21,6 +20,7 @@ public class GameInit : MonoBehaviour
 
     private IEnumerator LoadGameScene()
     {
+        ResolutionManager.Instance.ApplySavedResolution();
         yield return new WaitForSeconds(0.2f);
         SceneManager.LoadScene(SceneName.MENU);
         yield return new WaitForSeconds(0.2f);

@@ -51,6 +51,7 @@ public class IdleState : PlayerState
 
         if (input.JumpPressed)
         {
+            AudioManager.PlaySfx(SoundID.JumpSfx);
             stateMachine.jumpCount = 1;
             movement.RequestJump();
             stateMachine.ChangeState(new JumpState(stateMachine));
@@ -71,6 +72,7 @@ public class MoveState : PlayerState
 
         if (input.JumpPressed)
         {
+            AudioManager.PlaySfx(SoundID.JumpSfx);
             stateMachine.jumpCount = 1;
             movement.RequestJump();
             stateMachine.ChangeState(new JumpState(stateMachine));

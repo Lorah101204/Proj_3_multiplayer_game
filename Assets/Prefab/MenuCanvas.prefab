@@ -748,7 +748,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -784,7 +784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802659a1ba5ce6a43b856f776e522fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuScene
-  settingPopupPrefab: {fileID: 5471074664104647446, guid: 745f43b26d746e747b1cc74a473f0fe6, type: 3}
+  settingPopup: {fileID: 0}
   HostJoinGO: {fileID: 0}
   playButton: {fileID: 2765772527569468549}
   settingButton: {fileID: 8906255331463604754}
