@@ -175,6 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5770151866845108805}
   - component: {fileID: 2862783989341534131}
+  - component: {fileID: -5671417994639437835}
   m_Layer: 0
   m_Name: Level2
   m_TagString: Untagged
@@ -225,6 +226,20 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &-5671417994639437835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247514657037675115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f97a2946febbdaf42958834e19514841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelGameObj
+  ShowTopMostFoldoutHeaderGroup: 1
+  levelWinTrigger: {fileID: 0}
 --- !u!1 &1557925131545843041
 GameObject:
   m_ObjectHideFlags: 0

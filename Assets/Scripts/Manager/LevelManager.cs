@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
             PlayerPrefs.SetInt(GameConstant.CURRENT_LEVEL_INDEX, nextLevelIndex);
             PlayerPrefs.Save();
         }
-    }
+    }   
 
     public LevelData GetCurrentLevelData()
     {

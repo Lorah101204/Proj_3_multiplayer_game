@@ -7,6 +7,8 @@ namespace DesignPattern
         LoadingCompletedEvent = 2,
         OnSwitchChanged = 3,
         OnDoorChanged = 4,
-        ResolutionChanged = 5
+        ResolutionChanged = 5,
+        OnLevelButtonClicked = 6,
+        OnLevelSelected = 7,
     }
 }

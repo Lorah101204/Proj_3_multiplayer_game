@@ -1,17 +1,23 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
+using DesignPattern;
 
 public class LevelsPopup : MonoBehaviour
 {
     [SerializeField] private Transform contentParent;
     [SerializeField] private LevelButton levelButtonPrefab;
 
-    public static int SelectedLevelIndex = 0;
 
     private void OnEnable()
     {
+        EventDispatcher.Instance.RegisterListener(EventID.OnLevelButtonClicked, (obj) => OnLevelSelected((int)obj));
         BuildLevelButtons();
+    }
+
+    private void OnDisable()
+    {
+        EventDispatcher.Instance.RemoveListener(EventID.OnLevelButtonClicked, (obj) => OnLevelSelected((int)obj));
     }
 
     private void BuildLevelButtons()
@@ -26,7 +32,7 @@ public class LevelsPopup : MonoBehaviour
         {
             LevelButton button = Instantiate(levelButtonPrefab, contentParent);
             bool isLocked = i > currentUnlocked;
-            button.SetUp(i, isLocked, OnLevelSelected);
+            button.SetUp(i, isLocked);
         }
     }
 
@@ -37,8 +43,7 @@ public class LevelsPopup : MonoBehaviour
             Debug.Log("Only host can select level");
             return;
         }
-
-        SelectedLevelIndex = index;
+        NetworkGameController.Instance.SetCurrentLevel(index);
         NetworkManager.Singleton.SceneManager.LoadScene(SceneName.GAMEPLAY, LoadSceneMode.Single);
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DesignPattern;
 
 public class LevelButton : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class LevelButton : MonoBehaviour
     [SerializeField] private Image lockImage;
 
     private int levelIndexValue;
-    private System.Action<int> onClick;
 
     private void OnEnable()
     {
@@ -21,10 +21,9 @@ public class LevelButton : MonoBehaviour
         button.onClick.RemoveListener(OnLevelButtonClicked);
     }
 
-    public void SetUp(int index, bool isLocked, System.Action<int> onClick)
+    public void SetUp(int index, bool isLocked)
     {
         levelIndexValue = index;
-        this.onClick = onClick;
 
         levelIndex.text = (index + 1).ToString();
         levelIndex.gameObject.SetActive(!isLocked);
@@ -36,6 +35,6 @@ public class LevelButton : MonoBehaviour
     private void OnLevelButtonClicked()
     {
         AudioManager.PlaySfx(SoundID.ButtonClick);
-        onClick?.Invoke(levelIndexValue);
+        EventDispatcher.Instance.PostEvent(EventID.OnLevelButtonClicked, levelIndexValue);
     }
 }

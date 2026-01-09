@@ -8,6 +8,7 @@ public class LobbyScene : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI joinCodeText;
     [SerializeField] private TextMeshProUGUI countPlayersText;
+    [SerializeField] private PlayerSpawner playerSpawner;
     private void Start()
     {
         if (NetworkManager.Singleton.IsHost)
@@ -15,7 +16,7 @@ public class LobbyScene : MonoBehaviour
             joinCodeText.text = LobbyRelayManager.Instance.LobbyCode;
             Debug.Log("Host in lobby — waiting for players...");
         }
-        
+        ResetPlayerPos();
         UpdatePlayerCount();
     }
 
@@ -23,5 +24,10 @@ public class LobbyScene : MonoBehaviour
     {
         int currentPlayers = NetworkManager.Singleton.ConnectedClientsIds.Count;
         countPlayersText.text = $"{currentPlayers}/4";
+    }
+
+    private void ResetPlayerPos()
+    {
+        playerSpawner.ResetAllPlayers();
     }
 }

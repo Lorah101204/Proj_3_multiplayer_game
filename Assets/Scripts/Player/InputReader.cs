@@ -38,8 +38,6 @@ public class InputReader : NetworkBehaviour
     private void LateUpdate()
     {
         if (!IsOwner) return;
-
-        // Reset jump mỗi frame để tránh spam
         JumpPressed = false;
     }
 

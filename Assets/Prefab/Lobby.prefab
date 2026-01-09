@@ -745,6 +745,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2891219634950147817}
   - component: {fileID: 1401773563050310668}
+  - component: {fileID: 7539793016576494281}
+  - component: {fileID: 6844703108257128320}
   m_Layer: 0
   m_Name: Lobby
   m_TagString: Untagged
@@ -787,6 +789,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LobbyScene
   joinCodeText: {fileID: 7972195432738453830}
   countPlayersText: {fileID: 8073144997549447658}
+  playerSpawner: {fileID: 6844703108257128320}
+--- !u!114 &7539793016576494281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4711760294511372392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3674738409
+  InScenePlacedSourceGlobalObjectIdHash: 4259069408
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &6844703108257128320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4711760294511372392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aee5481a34cd02c4ba85a15620c616a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawner
+  ShowTopMostFoldoutHeaderGroup: 1
+  spawnPoints: {fileID: 9190100896698232853}
 --- !u!1 &5768826232544343453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,7 +1264,7 @@ Transform:
   m_GameObject: {fileID: 9071055636720764135}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.035, z: 0}
+  m_LocalPosition: {x: -6.33, y: -3.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
