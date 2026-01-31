@@ -21,7 +21,7 @@ public class GameplayBootstrap : NetworkBehaviour
     {
         if (!IsServer) return;
         SpawnLevel(levelIndex);
-        StartCoroutine(ResetPlayers());
+        ResetPlayers();
     }
 
 
@@ -42,9 +42,8 @@ public class GameplayBootstrap : NetworkBehaviour
         NetworkGameController.Instance.OnLevelWin();
     }
 
-    private IEnumerator ResetPlayers()
+    private void ResetPlayers()
     {
-        yield return new WaitForEndOfFrame();
         playerSpawner.ResetAllPlayers();
     }
 

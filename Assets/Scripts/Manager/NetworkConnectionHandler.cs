@@ -38,9 +38,9 @@ public class NetworkConnectionHandler : MonoBehaviour
     {
         Debug.Log($"[NetworkConnectionHandler] Client {clientId} disconnected");
 
-        if (clientId == 0 && NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
+        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
         {
-            Debug.Log("[NetworkConnectionHandler] HOST DISCONNECTED! Returning to menu...");
+            Debug.Log("[NetworkConnectionHandler] Disconnected from server (Host left or connection lost). Returning to menu...");
             HandleHostDisconnect();
         }
     }
