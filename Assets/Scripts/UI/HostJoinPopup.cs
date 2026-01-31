@@ -9,6 +9,8 @@ public class HostJoinPopup : MonoBehaviour
     public Button buttonHost;
     public Button buttonJoin;
     public Button buttonConfirmJoin;
+    public Button closeButton;
+    public Button cancelJoinButton;
 
     public GameObject joinPanel;
     public TMP_InputField joinCodeInput;
@@ -18,8 +20,10 @@ public class HostJoinPopup : MonoBehaviour
         buttonHost.onClick.AddListener(OnClickHost);
         buttonJoin.onClick.AddListener(OnClickShowJoinPanel);
         buttonConfirmJoin.onClick.AddListener(OnClickConfirmJoin);
+        closeButton.onClick.AddListener(OnClickClose);
+        cancelJoinButton.onClick.AddListener(OnClickCancelJoin);
 
-        LobbyRelayManager.Instance.OnHostReady   += LoadLobbyScene;
+        LobbyRelayManager.Instance.OnHostReady += LoadLobbyScene;
         LobbyRelayManager.Instance.OnClientReady += LoadLobbyScene;
     }
 
@@ -28,8 +32,10 @@ public class HostJoinPopup : MonoBehaviour
         buttonHost.onClick.RemoveListener(OnClickHost);
         buttonJoin.onClick.RemoveListener(OnClickShowJoinPanel);
         buttonConfirmJoin.onClick.RemoveListener(OnClickConfirmJoin);
+        closeButton.onClick.RemoveListener(OnClickClose);
+        cancelJoinButton.onClick.RemoveListener(OnClickCancelJoin);
 
-        LobbyRelayManager.Instance.OnHostReady   -= LoadLobbyScene;
+        LobbyRelayManager.Instance.OnHostReady -= LoadLobbyScene;
         LobbyRelayManager.Instance.OnClientReady -= LoadLobbyScene;
     }
 
@@ -40,7 +46,7 @@ public class HostJoinPopup : MonoBehaviour
     }
 
     void OnClickShowJoinPanel()
-    {  
+    {
         AudioManager.PlaySfx(SoundID.ButtonClick);
         joinPanel.SetActive(true);
     }
@@ -57,5 +63,17 @@ public class HostJoinPopup : MonoBehaviour
     void LoadLobbyScene()
     {
         NetworkManager.Singleton.SceneManager.LoadScene(SceneName.LOBBY, LoadSceneMode.Single);
+    }
+    
+    void OnClickClose()
+    {
+        AudioManager.PlaySfx(SoundID.ButtonClick);
+        gameObject.SetActive(false);
+    }
+
+    void OnClickCancelJoin()
+    {
+        AudioManager.PlaySfx(SoundID.ButtonClick);
+        joinPanel.SetActive(false);
     }
 }

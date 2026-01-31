@@ -72,6 +72,10 @@ public class LobbyRelayManager : MonoBehaviour
 
             NetworkManager.Singleton.StartHost();
             Debug.Log("[Netcode] HOST started");
+            
+            // Ensure NetworkConnectionHandler is created and registered
+            EnsureNetworkConnectionHandler();
+            
             OnHostReady?.Invoke();
         }
         catch (Exception e)
@@ -107,6 +111,7 @@ public class LobbyRelayManager : MonoBehaviour
 
             NetworkManager.Singleton.StartClient();
             Debug.Log("[Netcode] CLIENT started");
+            EnsureNetworkConnectionHandler();
 
             OnClientReady?.Invoke();
         }
@@ -120,5 +125,13 @@ public class LobbyRelayManager : MonoBehaviour
             Debug.LogError($"JoinLobbyAndRelay FAILED: {e}");
             throw;
         }
+    }
+
+    /// <summary>
+    /// Ensure NetworkConnectionHandler exists and is registered
+    /// </summary>
+    private void EnsureNetworkConnectionHandler()
+    {
+        NetworkConnectionHandler.Instance.RegisterConnectionCallbacks();
     }
 }

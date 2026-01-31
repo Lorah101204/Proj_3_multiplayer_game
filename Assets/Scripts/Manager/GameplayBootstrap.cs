@@ -48,4 +48,8 @@ public class GameplayBootstrap : NetworkBehaviour
         playerSpawner.ResetAllPlayers();
     }
 
+    public void ResetAllPlayersRpc()
+    {
+        playerSpawner.ResetAllPlayers();
+    }
 }

@@ -9,6 +9,8 @@ public class LobbyScene : MonoBehaviour
     [SerializeField] private TextMeshProUGUI joinCodeText;
     [SerializeField] private TextMeshProUGUI countPlayersText;
     [SerializeField] private PlayerSpawner playerSpawner;
+    [SerializeField] private InGamePausePopup inGamePausePopup;
+
     private void Start()
     {
         if (NetworkManager.Singleton.IsHost)
@@ -29,5 +31,16 @@ public class LobbyScene : MonoBehaviour
     private void ResetPlayerPos()
     {
         playerSpawner.ResetAllPlayers();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (inGamePausePopup != null)
+            {
+                inGamePausePopup.TogglePause();
+            }
+        }
     }
 }

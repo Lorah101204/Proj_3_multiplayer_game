@@ -1185,8 +1185,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1641495530}
-  - component: {fileID: 1641495529}
   - component: {fileID: 1641495528}
+  - component: {fileID: 1641495529}
+  - component: {fileID: 1641495531}
   m_Layer: 0
   m_Name: NetworkGameManager
   m_TagString: Untagged
@@ -1247,6 +1248,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1641495531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641495527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d13378c545293ff4da3c1dbfa10642fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkConnectionHandler
 --- !u!1 &1685705729
 GameObject:
   m_ObjectHideFlags: 0
